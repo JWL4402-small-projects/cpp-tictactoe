@@ -7,6 +7,7 @@
 
 using namespace TicTacToe;
 
+/// @brief Starts a game of TicTacToe.
 void TicTacToe::start() {
     bool active = true;
     char turn = 'X';
@@ -26,7 +27,6 @@ void TicTacToe::start() {
                 printf("\nIncorrect input. Please enter a valid numeric position [1-9] : ");
                 std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                continue;
             }
             if (pos < 1 || pos > 9) {
                 printf("\nIncorrect input. Please enter a valid position [1-9] : ");
@@ -65,6 +65,21 @@ void TicTacToe::start() {
     default:
         throw;
     }
+}
+
+/// @brief Welcomes the player to the game and explains the rules.
+void TicTacToe::welcome() {
+    printf("Welcome to TicTacToe!\n\n");
+
+    printf("To play the game, select a position on the board by inputting the corresponding number.\n\n");
+    
+    char board[9];
+    for (int i = 0; i < 9; i++) {
+        board[i] = 49 + i; // converts to ASCII code so it's easiest to just embrace it
+    }
+    print_board(board);
+    printf("\nEnjoy the game!\n");
+    printf("\n-------------------------\n\n");
 }
 
 /// @brief Prints the TicTacToe board to the console.
