@@ -67,6 +67,8 @@ void TicTacToe::start() {
     }
 }
 
+/// @brief Prints the TicTacToe board to the console.
+/// @param board A char array representing the board.
 void TicTacToe::print_board(char* board) {
 	printf(" %c | %c | %c", *board, *(board + 1), *(board + 2));
 	printf("\n---+---+---\n");
@@ -75,6 +77,9 @@ void TicTacToe::print_board(char* board) {
 	printf(" %c | %c | %c\n", *(board + 6), *(board + 7), *(board + 8));
 }
 
+/// @brief Checks if there is a winner or draw.
+/// @param board A char array representing the board.
+/// @return A GameState value, either UNDECIDED, DRAW, or WIN, depending on the state of the board.
 GameState TicTacToe::check_win(char* board) {
     int pos[8][3] = {
         {0, 1, 2},
@@ -101,7 +106,7 @@ GameState TicTacToe::check_win(char* board) {
     int empty = 0;
     for (i = 0; i < 9; i++) {
         if (*(board + i) == ' ') { empty++; }
-    }
+    } // checks if any empty spaces remain in the board
     if (empty == 0) { return DRAW; }
 
     return UNDECIDED;
