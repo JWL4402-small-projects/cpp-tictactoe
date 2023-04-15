@@ -2,7 +2,9 @@
 
 namespace TicTacToe
 {
+	enum GameState { UNDECIDED, DRAW, WIN };
+
 	void start();
 	void print_board(char*);
-	char check_win(char*);
+	GameState check_win(char*);
 }

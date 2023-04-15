@@ -1,22 +1,70 @@
 #include "TicTacToe.h"
 
+#include <iostream>
 #include <cstdio>
+#include <limits>
 #include <algorithm>
 
 using namespace TicTacToe;
 
 void TicTacToe::start() {
-	bool active = true;
+    bool active = true;
+    char turn = 'X';
 
-	char turn = 'X';
+    GameState state = UNDECIDED;
+    char winner = ' ';
 
-	char board[9];
-	std::fill_n(board, 9, 'X'); // for testing
+    char board[9];
+    std::fill_n(board, 9, ' ');
 
-    board[0] = board[2] = board[3] = board[5] = board[7] = 'O'; // for testing
+    while (active) {
+        print_board(board);
+        printf("Player %c, it is your turn to play. Please select a position [1-9] : ", turn);
+        int pos;
+        do {
+            while (!(std::cin >> pos)) {
+                printf("\nIncorrect input. Please enter a valid numeric position [1-9] : ");
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                continue;
+            }
+            if (pos < 1 || pos > 9) {
+                printf("\nIncorrect input. Please enter a valid position [1-9] : ");
+                continue;
+            }
+            if (board[pos - 1] != ' ') {
+                printf("\nIncorrect input. Please enter an available position [1-9] : ");
+                continue;
+            }
+            std::cout << std::endl;
+        } while ((pos < 1 || pos > 9) || board[pos - 1] != ' ');
+        
+        pos--; // decrement so that it reflects the desired array index
+        
+        board[pos] = turn;
+        state = check_win(board);
 
-	print_board(board);
-    printf("%c", check_win(board));
+        if (state != UNDECIDED) {
+            active = false;
+            winner = turn;
+        }
+        else {
+            turn = turn != 'X' ? 'X' : 'O';
+        }
+    }
+
+    print_board(board);
+    switch (state)
+    {
+    case DRAW:
+        printf("The game was a draw!");
+        break;
+    case WIN:
+        printf("Player %c won the game. Congratulations.", winner);
+        break;
+    default:
+        throw;
+    }
 }
 
 void TicTacToe::print_board(char* board) {
@@ -27,7 +75,7 @@ void TicTacToe::print_board(char* board) {
 	printf(" %c | %c | %c\n", *(board + 6), *(board + 7), *(board + 8));
 }
 
-char TicTacToe::check_win(char* board) {
+GameState TicTacToe::check_win(char* board) {
     int pos[8][3] = {
         {0, 1, 2},
         {3, 4, 5},
@@ -45,7 +93,8 @@ char TicTacToe::check_win(char* board) {
         char p2 = board[pos[i][1]];
         char p3 = board[pos[i][2]];
         if (p1 != ' ' && p1 == p2 && p2 == p3) {
-            return p1;
+
+            return WIN;
         }
     }
 
@@ -53,7 +102,7 @@ char TicTacToe::check_win(char* board) {
     for (i = 0; i < 9; i++) {
         if (*(board + i) == ' ') { empty++; }
     }
-    if (empty == 0) { return 'D'; }
+    if (empty == 0) { return DRAW; }
 
-    return ' ';
+    return UNDECIDED;
 }
