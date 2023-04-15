@@ -26,7 +26,6 @@ void TicTacToe::start() {
                 printf("\nIncorrect input. Please enter a valid numeric position [1-9] : ");
                 std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                continue;
             }
             if (pos < 1 || pos > 9) {
                 printf("\nIncorrect input. Please enter a valid position [1-9] : ");
